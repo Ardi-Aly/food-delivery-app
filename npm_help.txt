@@ -1,0 +1,18 @@
+Perintah npm:
+
+Menjalankan skrip
+npm start
+npm run build
+npm run dev
+npm test
+
+menghapus node_moduls dan reinstall
+rm -rf node_modules
+npm install
+
+install tools global:
+npm install -g create-reacht-app
+
+Menjalankan printah dari package tanpa menginstalnya secara global
+npx create-ract-app my-app
+npx vite
