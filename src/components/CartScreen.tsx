@@ -45,7 +45,7 @@ const CartScreen: React.FC<CartScreenProps> = ({ cartItems, onBackToHome, onChec
                 <div key={index} className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="text-3xl mr-4">{item.image}</div>
+                      <img src={item.image} alt={item.name} className="w-16 h-16 rounded-lg object-cover mr-4" />
                       <div>
                         <h4 className="font-semibold">{item.name}</h4>
                         <p className="text-gray-600">${item.price}</p>

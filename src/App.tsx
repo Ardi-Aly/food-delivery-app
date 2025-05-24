@@ -26,7 +26,7 @@ const FoodDeliveryApp = () => {
     {
       id: 1,
       name: "Beef Burger",
-      image: "🍔",
+      image: "/images/burger.jpg",
       price: 12.99,
       rating: 4.8,
       description: "Juicy beef patty with fresh vegetables",
@@ -35,7 +35,7 @@ const FoodDeliveryApp = () => {
     {
       id: 2,
       name: "Chicken Wings",
-      image: "🍗",
+      image: "/images/chiken.jpg",
       price: 8.99,
       rating: 4.6,
       description: "Crispy chicken wings with special sauce",
@@ -44,7 +44,7 @@ const FoodDeliveryApp = () => {
     {
       id: 3,
       name: "Pizza Margherita",
-      image: "🍕",
+      image: "/images/pizza.jpg",
       price: 15.99,
       rating: 4.9,
       description: "Classic pizza with tomato and mozzarella",
@@ -53,7 +53,7 @@ const FoodDeliveryApp = () => {
     {
       id: 4,
       name: "Pasta Carbonara",
-      image: "🍝",
+      image: "/images/passta.jpg",
       price: 11.99,
       rating: 4.7,
       description: "Creamy pasta with bacon and parmesan",
