@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FoodItem } from './types';
+import React, { useState, useEffect } from 'react';
+import { FoodItem, CartItem } from './types';
 import SplashScreen from './components/SplashScreen';
 import LoginScreen from './components/LoginScreen';
 import HomeScreen from './components/HomeScreen';
@@ -10,8 +10,12 @@ import TrackingScreen from './components/TrackingScreen';
 const FoodDeliveryApp = () => {
   const [currentScreen, setCurrentScreen] = useState('splash');
   const [isAnimating, setIsAnimating] = useState(false);
-  const [cartItems, setCartItems] = useState<FoodItem[]>([]);
-  const [cartCount, setCartCount] = useState(0);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  const toggleTheme = () => {
+    setTheme(currentTheme => currentTheme === 'light' ? 'dark' : 'light');
+  };
 
   const changeScreen = (screen: string) => {
     setIsAnimating(true);
@@ -62,9 +66,35 @@ const FoodDeliveryApp = () => {
   ];
 
   const addToCart = (item: FoodItem) => {
-    setCartItems([...cartItems, item]);
-    setCartCount(cartCount + 1);
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(cartItem => cartItem.id === item.id);
+      if (existingItem) {
+        return prevItems.map(cartItem =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      }
+      return [...prevItems, { ...item, quantity: 1 }];
+    });
   };
+
+  const updateCartItemQuantity = (itemId: number, delta: number) => {
+    setCartItems(prevItems => {
+      return prevItems.reduce((acc: CartItem[], item) => {
+        if (item.id === itemId) {
+          const newQuantity = item.quantity + delta;
+          if (newQuantity <= 0) {
+            return acc; // Remove item if quantity becomes 0 or negative
+          }
+          return [...acc, { ...item, quantity: newQuantity }];
+        }
+        return [...acc, item];
+      }, []);
+    });
+  };
+
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Screen Router
   const renderScreen = () => {
@@ -78,7 +108,7 @@ const FoodDeliveryApp = () => {
         return <LoginScreen 
           isAnimating={isAnimating}
           onLogin={() => changeScreen('home')}
-          onSignUp={() => changeScreen('signup')}
+          onSignUp={() => changeScreen('home')}
         />;
       case 'home':
         return <HomeScreen 
@@ -86,33 +116,33 @@ const FoodDeliveryApp = () => {
           cartCount={cartCount}
           onAddToCart={addToCart}
           onCartClick={() => changeScreen('cart')}
+          theme={theme}
+          onThemeToggle={toggleTheme}
         />;
       case 'cart':
         return <CartScreen 
           cartItems={cartItems}
-          onBackToHome={() => changeScreen('home')}
+          onUpdateQuantity={updateCartItemQuantity}
+          onGoBack={() => changeScreen('home')}
           onCheckout={() => changeScreen('checkout')}
         />;
       case 'checkout':
         return <CheckoutScreen 
           cartItems={cartItems}
-          onBackToCart={() => changeScreen('cart')}
-          onPlaceOrder={() => changeScreen('tracking')}
+          onGoBack={() => changeScreen('cart')}
+          onComplete={() => changeScreen('tracking')}
         />;
       case 'tracking':
         return <TrackingScreen 
           onBackToHome={() => changeScreen('home')}
         />;
       default:
-        return <SplashScreen 
-          isAnimating={isAnimating} 
-          onGetStarted={() => changeScreen('login')} 
-        />;
+        return null;
     }
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white shadow-xl min-h-screen lg:min-h-[calc(100vh-2rem)] lg:my-4 lg:rounded-xl">
+    <div className={`app-container ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       {renderScreen()}
     </div>
   );

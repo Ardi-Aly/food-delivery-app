@@ -1,20 +1,14 @@
 import React from 'react';
 import { MapPin, Star } from 'lucide-react';
-import { FoodItem } from '../types';
+import { CartItem, CheckoutScreenProps } from '../types';
 
-interface CheckoutScreenProps {
-  cartItems: FoodItem[];
-  onBackToCart: () => void;
-  onPlaceOrder: () => void;
-}
-
-const CheckoutScreen: React.FC<CheckoutScreenProps> = ({ cartItems, onBackToCart, onPlaceOrder }) => (
+const CheckoutScreen: React.FC<CheckoutScreenProps> = ({ cartItems, onGoBack, onComplete }) => (
   <div className="min-h-screen bg-gray-50">
     {/* Header */}
     <div className="bg-white px-4 lg:px-6 py-6 shadow-sm sticky top-0 z-50">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center">
-          <button onClick={onBackToCart} className="mr-4 hover:bg-gray-100 p-2 rounded-full transition-colors">
+          <button onClick={onGoBack} className="mr-4 hover:bg-gray-100 p-2 rounded-full transition-colors">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -61,8 +55,8 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({ cartItems, onBackToCart
           <h3 className="font-semibold mb-4">Order Summary</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-gray-600">Items ({cartItems.length})</span>
-              <span>${cartItems.reduce((total, item) => total + item.price, 0).toFixed(2)}</span>
+              <span className="text-gray-600">Items ({cartItems.reduce((sum, item) => sum + item.quantity, 0)})</span>
+              <span>${cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Delivery Fee</span>
@@ -72,7 +66,7 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({ cartItems, onBackToCart
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
                 <span className="text-red-500">
-                  ${(cartItems.reduce((total, item) => total + item.price, 0) + 2.99).toFixed(2)}
+                  ${(cartItems.reduce((total, item) => total + item.price * item.quantity, 0) + 2.99).toFixed(2)}
                 </span>
               </div>
             </div>
@@ -80,7 +74,7 @@ const CheckoutScreen: React.FC<CheckoutScreenProps> = ({ cartItems, onBackToCart
         </div>
 
         <button 
-          onClick={onPlaceOrder}
+          onClick={onComplete}
           className="w-full bg-red-500 text-white py-4 rounded-lg font-semibold hover:bg-red-600 transition-colors"
         >
           Place Order
