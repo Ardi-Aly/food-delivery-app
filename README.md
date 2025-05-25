@@ -116,10 +116,6 @@ npm run preview
 ## 🤝 Contributing
 This project is developed as part of the MPTI Group Project - Exspres Food. Contributions, issues, and feature requests are welcome!
 
-## 👥 Team
-- Ardian_Mizu (Lead Developer)
-- [Other team members...]
-
 ## 📄 License
 This project is private and developed for educational purposes as part of MPTI coursework.
 
