@@ -120,4 +120,4 @@ This project is developed as part of the MPTI Group Project - Exspres Food. Cont
 This project is private and developed for educational purposes as part of MPTI coursework.
 
 ---
-Developed with ❤️ by MPTI Group - Exspres Food
+Developed with ❤️ by MPTI Group - Exspres Food Me
